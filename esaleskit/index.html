@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Saleskit BMW</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #content {
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #01498b;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>E-Saleskit BMW</h1>
+    <input type="text" id="folderLink" placeholder="Nhập link folder Google Drive">
+    <button onclick="fetchData()">Lấy dữ liệu</button>
+    <div id="content"></div>
+
+    <script>
+        function fetchData() {
+            var folderLink = document.getElementById("folderLink").value;
+            if (!folderLink) {
+                alert("Vui lòng nhập link folder");
+                return;
+            }
+            
+            fetch("YOUR_WEB_APP_URL?folder=" + encodeURIComponent(folderLink))
+                .then(response => response.json())
+                .then(data => {
+                    let content = "<table><tr><th>Thời gian</th><th>Root</th><th>Thư mục</th><th>Tên file</th><th>ID</th><th>Loại</th></tr>";
+                    data.detail.forEach(row => {
+                        content += `<tr>
+                            <td>${row[0]}</td>
+                            <td>${row[1]}</td>
+                            <td>${row[2]}</td>
+                            <td>${row[3]}</td>
+                            <td>${row[4]}</td>
+                            <td>${row[5]}</td>
+                        </tr>`;
+                    });
+                    content += "</table>";
+                    document.getElementById("content").innerHTML = content;
+                })
+                .catch(error => console.error("Lỗi khi lấy dữ liệu:", error));
+        }
+    </script>
+</body>
+</html>
